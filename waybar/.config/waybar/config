@@ -1,0 +1,75 @@
+{
+    "layer": "top",
+    "position": "top",
+    "reload_style_on_change": true,
+    "modules-left": [
+        "clock",
+    ],
+    "modules-center": [
+        "hyprland/workspaces",
+    ],
+    "modules-right": [
+        "tray",
+        "pulseaudio",
+        "network",
+        "battery",
+    ],
+
+    "clock": {
+        "interval": 1,
+        "format": "{:%I:%M %p}",
+        "tooltip-format": "{:%m/%d/%Y,\n%I:%M:%S %p}",
+    },
+
+    "hyprland/workspaces": {
+        "format": "{icon}",
+        "format-icons": {
+            // "default": "",
+        },
+        "persistent-workspaces": {
+            "*": [ 1,2,3,4,5 ]
+        }
+    },
+
+    "tray": {
+        "spacing": 10,
+    },
+    "pulseaudio": {
+        "format": "{volume}% {icon}",
+        "format-muted": "0% ",
+        "format-bluetooth": "{volume}% {icon}",
+        "format-bluetooth-muted": "0% ",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", ""]
+        },
+        "on-click": "pavucontrol"
+    },
+    "network": {
+        "format-wifi": "",
+        "format-ethernet": "",
+        "format-disconnected": "",
+        "tooltip-format-wifi": "{essid} ({signalStrength}%)",
+        "tooltip-format-ethernet": "{ipaddr}/{cidr}",
+        "tooltip-format-disconnected": "No Internet",
+        "on-click": "wezterm start --always-new-process nmtui",
+    },
+    "battery": {
+        "interval": 3,
+        "states": {
+            "good": 95,
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{capacity}% {icon}",
+        "format-full": "{capacity}% {icon}",
+        "format-charging": "{capacity}% ",
+        "format-plugged": "{capacity}% ",
+        "format-icons": ["", "", "", "", ""]
+    },
+}
