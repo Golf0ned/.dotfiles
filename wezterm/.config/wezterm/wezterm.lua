@@ -27,10 +27,10 @@ if is_linux then
     config.enable_tab_bar = false
     config.window_background_opacity = 0.8
     config.window_padding = {
-        left = "0.5pt",
-        right = "0.5pt",
-        top = "0.25pt",
-        bottom = "0.25pt",
+        left = "0.5cell",
+        right = "0.5cell",
+        top = "0.1cell",
+        bottom = "0.1cell",
     }
 
     -- paste
