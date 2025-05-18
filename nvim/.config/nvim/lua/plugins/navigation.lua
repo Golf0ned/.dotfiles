@@ -52,6 +52,9 @@ return {
                 keymaps = {
                     ["-"] = { "actions.parent", mode = "n" },
                     ["_"] = { "actions.open_cwd", mode = "n" },
+                    -- unbind nav mappings
+                    ["<C-h>"] = false,
+                    ["<C-l>"] = false,
                 },
                 view_options = {
                     show_hidden = true,
