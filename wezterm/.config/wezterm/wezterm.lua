@@ -7,7 +7,8 @@ local is_windows = wezterm.target_triple:find("windows") ~= nil
 local config = wezterm.config_builder()
 
 -- theme stuff
-config.color_scheme = "carbonfox"
+config.color_scheme = "tokyonight_night"
+config.font = wezterm.font("JetBrains Mono")
 config.harfbuzz_features = { "calt=0", "clig=0", "liga=0" }
 
 -- sanity wezterm settings

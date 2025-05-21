@@ -8,41 +8,23 @@ return {
         }
     },
     {
-        "catppuccin/nvim",
-        name = "catppuccin",
-        priority = 1000,
-        config = function()
-            -- vim.cmd.colorscheme "catppuccin-mocha"
-            -- vim.cmd.colorscheme "catppuccin-macchiato"
-            -- vim.cmd.colorscheme "catppuccin-frappe"
-
-            -- vim.cmd.colorscheme "catppuccin-latte"
-        end
-    },
-    {
         "folke/tokyonight.nvim",
         priority = 1000,
-        opts = {},
         config = function()
-            -- vim.cmd.colorscheme "tokyonight-moon"
-            -- vim.cmd.colorscheme "tokyonight-night"
-            -- vim.cmd.colorscheme "tokyonight-storm"
-
-            -- vim.cmd.colorscheme "tokyonight-day"
+            require("tokyonight").setup ({
+                style = "night",
+                styles = {
+                    keywords = {italic = false },
+                },
+                on_highlights = function(highlights, colors)
+                    highlights.MatchParen = {
+                        bg = colors.blue0,
+                        bold = true,
+                    }
+                end,
+            })
+            vim.cmd.colorscheme "tokyonight"
         end
     },
-    {
-        "EdenEast/nightfox.nvim",
-        priority = 1000,
-        config = function()
-            vim.cmd.colorscheme "carbonfox"
-            -- vim.cmd.colorscheme "duskfox"
-            -- vim.cmd.colorscheme "nightfox"
-            -- vim.cmd.colorscheme "nordfox"
-            -- vim.cmd.colorscheme "terafox"
-
-            -- vim.cmd.colorscheme "dawnfox"
-            -- vim.cmd.colorscheme "dayfox"
-        end
-    },
+    "EdenEast/nightfox.nvim",
 }
