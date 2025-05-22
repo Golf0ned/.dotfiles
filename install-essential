@@ -1,0 +1,69 @@
+#!/bin/bash
+
+
+function help {
+    echo "Install script for remote development, where I don't have access to stow."
+    echo "Usage: `basename $0` <OPTIONS>"
+}
+
+function options {
+    echo "Options:"
+    echo "  -h, --help         Show this help message"
+    echo "  -ns, --no-symlink  Do not create symlinks, just copy files"
+    echo "  --dry-run          Do not commit changes, just show what would be done"
+}
+
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -h|--help)
+            help
+            echo ""
+            options
+            exit 1
+            ;;
+        -ns|--no-symlink)
+            NO_SYMLINK=true
+            shift
+            ;;
+        --dry-run)
+            DRY_RUN=true
+            shift
+            ;;
+        *)
+            echo "Unknown option: $1"
+            options
+            exit 1
+            ;;
+    esac
+done
+
+echo "Installing nvim and tmux dotfiles:"
+echo "- Using symlinks: ${NO_SYMLINK:-true}"
+if [[ -n ${DRY_RUN} ]]; then
+    echo "- Dry run: true"
+fi
+
+echo -ne "Continue? [Y/n] "
+read -r CONTINUE
+if [[ ! ${CONTINUE} =~ ^[Yy]$ ]] && [[ -n ${CONTINUE} ]]; then
+    echo "Aborting."
+    exit 1
+fi
+
+PREFIX=""
+if [[ -n ${DRY_RUN} ]]; then
+    PREFIX="echo "
+fi
+
+if [[ -n ${NO_SYMLINK} ]]; then
+    echo "Copying files..."
+    ${PREFIX}cp -r ${HOME}/.dotfiles/nvim/.config/nvim/ ${HOME}/.config/nvim/
+    ${PREFIX}cp ${HOME}/.dotfiles/tmux/.tmux.conf ${HOME}/.tmux.conf
+else
+    echo "Creating symlinks..."
+    ${PREFIX}ln -s ${HOME}/.dotfiles/nvim/.config/nvim ${HOME}/.config
+    ${PREFIX}ln -s ${HOME}/.dotfiles/tmux/.tmux.conf ${HOME}/.tmux.conf
+fi
+
+exit 0
