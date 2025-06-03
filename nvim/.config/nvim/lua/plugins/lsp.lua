@@ -52,13 +52,6 @@ return {
                     end,
                 }
             })
-
-            -- racket langserver
-            require("lspconfig")["racket_langserver"].setup({
-                capabilities = capabilities,
-                filetypes = { "racket" },
-                cmd = { "racket", "-l", "racket-langserver" },
-            })
         end,
     },
     {
