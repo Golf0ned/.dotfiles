@@ -16,6 +16,16 @@ return {
                 styles = {
                     keywords = {italic = false },
                 },
+                on_colors = function(colors)
+                    colors.git = {
+                        -- add = "#82c13e",
+                        -- change = "#d4902b",
+                        -- delete = "#f10e38",
+                        add = colors.green,
+                        change = colors.yellow,
+                        delete = colors.red,
+                    }
+                end,
                 on_highlights = function(highlights, colors)
                     highlights.MatchParen = {
                         bg = colors.blue0,
