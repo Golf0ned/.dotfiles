@@ -82,12 +82,20 @@ button {
     margin-right: 0;
 }
 
+#battery.warning:not(.charging), 
+#battery.critical:not(.charging),
+#battery.critical {
+    color: #ff8888;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+    background-color: #eb4d4b;
+}
+
 /*
 #clock {}
 
-#battery icon {
-    color: red;
-}
 
 #battery.charging,
 #battery.plugged {
@@ -123,8 +131,4 @@ button {
     -gtk-icon-effect: dim;
 }
 
-#tray > .needs-attention {
-    -gtk-icon-effect: highlight;
-    background-color: #eb4d4b;
-}
  */
