@@ -15,11 +15,14 @@ vim.keymap.set({"n", "v"}, "<leader>d", [["_d]])
 -- clear search highlight
 vim.keymap.set("n", "<esc>", "<cmd>noh<cr>")
 
--- search terms stay centered
+-- J stays on the same line
+vim.keymap.set("n", "J", "mzJ`z")
+
+-- sanity centering
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
-
-
+vim.keymap.set("n", "<C-d>", "<C-d>zz")
+vim.keymap.set("n", "<C-u>", "<C-u>zz")
 
 
 -- diagnostics
@@ -28,6 +31,4 @@ vim.keymap.set("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<cr>")
 vim.keymap.set("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<cr>")
 
 -- primeagen things im trying
-vim.keymap.set("n", "J", "mzJ`z")
-vim.keymap.set("n", "<C-d>", "<C-d>zz")
-vim.keymap.set("n", "<C-u>", "<C-u>zz")
+vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")

@@ -38,4 +38,5 @@ return {
     },
     "EdenEast/nightfox.nvim",
     "rebelot/kanagawa.nvim",
+    "vague2k/vague.nvim",
 }
