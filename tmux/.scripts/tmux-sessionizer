@@ -3,13 +3,36 @@
 DIRS=(
     ~/code/projects
     ~/code/school
+)
+
+EXTRA=(
     ~/.dotfiles
 )
 
 if [[ $# -eq 1 ]]; then
     selected=$1
 else
-    selected=$(find "${DIRS[@]}" -mindepth 1 -maxdepth 1 -type d | fzf)
+    all_dirs=()
+
+    for base in "${DIRS[@]}"; do
+        label=$(basename "$base")
+        while IFS= read -r sub; do
+            sub_name=$(basename "$sub")
+            all_entries+=("$label/$sub_name"$'\t'"$sub")
+        done < <(find "$base" -mindepth 1 -maxdepth 1 -type d)
+    done
+
+    for path in "${EXTRA[@]}"; do
+        abs=$(realpath "$path")
+        name=$(basename "$abs")
+        all_entries+=("extra/$name"$'\t'"$abs")
+    done
+
+    selected=$(printf "%s\n" "${all_entries[@]}" \
+        | fzf --ansi --border --padding 1,1 \
+              --with-nth=1 --delimiter="\t" \
+    | cut -f2)
+
 fi
 
 if [[ -z $selected ]]; then
