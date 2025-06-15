@@ -1,15 +1,13 @@
 * {
-    font-family: JetBrainsMono, FontAwesome;
-    /* font-size: 5.1rem; */
-    font-size: 1.1rem;
+    font-family: FontAwesome, JetBrains Mono;
+    font-size: 1rem;
     min-height: 0;
     padding: 0.1rem 0.25rem;
 }
 
 window#waybar {
-    background: rgba(15, 15, 15, 0.5);
-    color: #ffffff;
-    border-radius: 1rem;
+    background: linear-gradient(180deg,rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0.21) 78%, rgba(0, 0, 0, 0) 100%);
+    color: white;
 }
 
 button {
@@ -19,35 +17,50 @@ button {
     border-radius: 0rem;
 }
 
+
 #workspaces {
-    background: black;
-    /* background-image: linear-gradient(180deg,rgba(82, 0, 82, 1) 0%, rgba(43, 0, 43, 1) 100%); */
-    border-radius: 1rem;
-    padding: 0 0.65rem;
+    background: transparent;
+    padding: 0.1rem 0.65rem;
     margin: 0.1rem 0rem;
 }
 
 #workspaces button {
-    margin: 0 0.25rem;
+    margin: 0 0.2rem;
     padding: 0 0.25rem;
-    color: purple;
-    border-bottom: 0.1rem solid rgba(238, 136, 238, 1);
+    border-radius: 0.3rem;
+    color: rgba(200, 200, 200, 1);
+    border: 0.09rem solid rgba(100, 100, 100, 1);
+    transition-duration: .1s;
 }
 
 @keyframes blink-orange {
     to {
-        color: orange;
+        background: rgba(255, 156, 45, 1);
     }
 }
 
 #workspaces button.empty {
-    color: purple;
-    border-bottom: 0.1rem solid purple;
+    color: rgba(200, 200, 200, 1);
+    border: 0.1rem solid transparent;
 }
+
+#workspaces button:hover {
+    color: rgba(162, 135, 255, 1);
+    background: transparent;
+    text-shadow: none;
+}
+
 #workspaces button.visible {
-    color: rgba(238, 136, 238, 1);
-    border-bottom: 0.1rem solid rgba(238, 136, 238, 1);
+    color: black;
+    background: rgba(126, 88, 255, 1);
+    font-weight: bold;
+    border: 0.1rem solid rgba(126, 88, 255, 1);
 }
+
+#workspaces button:hover {
+    border: 0.1rem solid rgba(162, 135, 255, 1);
+}
+
 #workspaces button.urgent {
     animation-name: blink-orange;
     animation-duration: 0.5s;
@@ -55,23 +68,16 @@ button {
     animation-iteration-count: 10;
     animation-direction: alternate;
 }
-#workspaces button:hover {
-    color: pink;
-    border-bottom: 0.1rem solid rgba(238, 136, 238, 1);
-    border-radius: 0.5rem;
-    background: rgba(238, 136, 238, 1);
-    text-shadow: none;
-}
+
 
 #clock,
 #battery,
 #network,
 #pulseaudio,
 #tray {
-
     margin: 2px;
-    padding-left: 0.6rem;
-    padding-right: 0.6rem;
+    padding-left: 0.7rem;
+    padding-right: 0.7rem;
 }
 
 .modules-left > widget:first-child > #workspaces {
@@ -82,19 +88,33 @@ button {
     margin-right: 0;
 }
 
-#battery.warning:not(.charging), 
-#battery.critical:not(.charging),
-#battery.critical {
-    color: #ff8888;
+#battery {
+    color: rgba(80, 250, 123, 1);
 }
+
+#battery.discharging {
+    color: white;
+}
+
+#battery.warning:not(.charging),
+#battery.critical:not(.charging) {
+    color: red;
+}
+
+
+/*
+#clock {}
 
 #tray > .needs-attention {
     -gtk-icon-effect: highlight;
     background-color: #eb4d4b;
 }
 
-/*
-#clock {}
+#battery.warning:not(.charging), 
+#battery.critical:not(.charging),
+#battery.critical {
+    color: #ff8888;
+}
 
 
 #battery.charging,
