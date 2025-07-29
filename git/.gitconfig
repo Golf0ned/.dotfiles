@@ -1,0 +1,6 @@
+[user]
+	email = benjaminye.email@gmail.com
+	name = Benjamin Ye
+
+[core]
+	editor = nvim
