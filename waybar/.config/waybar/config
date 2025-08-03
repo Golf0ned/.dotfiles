@@ -40,10 +40,10 @@
             "warning": 30,
             "critical": 15
         },
-        "format": "{icon}",
-        "format-full": "{icon}",
-        "format-charging": "",
-        "format-plugged": "",
+        "format": "{capacity}% {icon}",
+        "format-full": "{capacity}% {icon}",
+        "format-charging": "{capacity}% ",
+        "format-plugged": "{capacity}% ",
         "format-icons": ["", "", "", "", ""],
         "tooltip-format": "{capacity}%, {time}",
         "tooltip-format-charging": "{capacity}% (charging), {time}",
@@ -61,10 +61,10 @@
     },
 
     "pulseaudio": {
-        "format": "{icon}",
-        "format-muted": "",
-        "format-bluetooth": "{icon}",
-        "format-bluetooth-muted": "",
+        "format": "{volume}% {icon}",
+        "format-muted": "{volume}% ",
+        "format-bluetooth": "{volume}% {icon}",
+        "format-bluetooth-muted": "{volume}% ",
         "format-icons": {
             "headphone": "",
             "hands-free": "",
