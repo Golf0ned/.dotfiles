@@ -52,6 +52,13 @@ button {
 
 #workspaces button.visible {
     color: black;
+    background: rgba(126, 88, 255, 0.5);
+    font-weight: bold;
+    border: 0.1rem solid rgba(126, 88, 255, 1);
+}
+
+#workspaces button.active {
+    color: black;
     background: rgba(126, 88, 255, 1);
     font-weight: bold;
     border: 0.1rem solid rgba(126, 88, 255, 1);
