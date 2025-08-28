@@ -55,6 +55,25 @@ return {
         end,
     },
     {
+        "stevearc/conform.nvim",
+        keys = {
+            {
+                "<leader>f",
+                function()
+                    require("conform").format { async = true, lsp_format = "fallback" }
+                end,
+                mode = "",
+            },
+        },
+        opts = {
+            notify_on_error = false,
+        },
+        formatters_by_ft = {
+            c = { "clang_format" },
+            cpp = { "clang_format" },
+        }
+    },
+    {
         "hrsh7th/nvim-cmp",
         dependencies = { "L3MON4D3/LuaSnip" },
         config = function()

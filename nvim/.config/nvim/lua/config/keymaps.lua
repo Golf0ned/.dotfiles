@@ -29,6 +29,3 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "gl", "<cmd>lua vim.diagnostic.open_float()<cr>")
 vim.keymap.set("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<cr>")
 vim.keymap.set("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<cr>")
-
--- primeagen things im trying
-vim.keymap.set("n", "<leader>f", "<cmd>silent !tmux neww tmux-sessionizer<CR>")

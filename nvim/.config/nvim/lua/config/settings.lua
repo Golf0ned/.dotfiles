@@ -29,4 +29,4 @@ vim.cmd([[let &t_Ce = "\e[4:0m"]])
 
 -- trying no scrolloff
 -- leaving this for when i inevitably say no
---vim.opt.scrolloff = 8
+vim.opt.scrolloff = 4
