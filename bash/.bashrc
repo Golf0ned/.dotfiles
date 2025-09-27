@@ -2,7 +2,8 @@
 [[ $- != *i* ]] && return
 
 # path
-export PATH=/home/golf0ned/.local/bin:$PATH
+export PATH=$HOME/.local/bin:$PATH
+export PATH=$HOME/.cargo/bin:$PATH
 
 # aliases
 source ~/.bash_aliases
