@@ -1,9 +1,7 @@
 return {
     {
         "lewis6991/gitsigns.nvim",
-        config = function()
-            require("gitsigns").setup()
-        end,
+        opts = {},
     },
     {
         "lukas-reineke/indent-blankline.nvim",
@@ -12,7 +10,7 @@ return {
     },
     {
         "HiPhish/rainbow-delimiters.nvim",
-        config = function ()
+        config = function()
             vim.g.rainbow_delimiters = {
                 highlight = {
                     "RainbowDelimiterYellow",
@@ -21,5 +19,5 @@ return {
                 },
             }
         end
-    }
+    },
 }

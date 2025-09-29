@@ -1,5 +1,5 @@
 return {
-    "tpope/vim-surround",
+    { "tpope/vim-surround" },
     {
         "windwp/nvim-autopairs",
         event = "InsertEnter",

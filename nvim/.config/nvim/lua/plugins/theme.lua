@@ -11,10 +11,10 @@ return {
         "folke/tokyonight.nvim",
         priority = 1000,
         config = function()
-            require("tokyonight").setup ({
+            require("tokyonight").setup({
                 style = "night",
                 styles = {
-                    keywords = {italic = false },
+                    keywords = { italic = false },
                 },
                 on_colors = function(colors)
                     colors.git = {
@@ -36,7 +36,8 @@ return {
             vim.cmd.colorscheme "tokyonight"
         end
     },
-    "EdenEast/nightfox.nvim",
-    "rebelot/kanagawa.nvim",
-    "vague2k/vague.nvim",
+    { "ellisonleao/gruvbox.nvim" },
+    { "EdenEast/nightfox.nvim" },
+    { "rebelot/kanagawa.nvim" },
+    { "vague2k/vague.nvim" },
 }
