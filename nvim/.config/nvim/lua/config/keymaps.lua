@@ -24,6 +24,9 @@ vim.keymap.set("n", "N", "Nzzzv")
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
 
+-- presenter mode
+vim.keymap.set("n", "<leader>;;", "<cmd>set background=light<cr><cmd>colorscheme retrobox<cr>")
+
 
 -- diagnostics
 vim.keymap.set("n", "gl", "<cmd>lua vim.diagnostic.open_float()<cr>")

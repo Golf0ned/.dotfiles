@@ -36,8 +36,6 @@ return {
             vim.cmd.colorscheme "tokyonight"
         end
     },
-    { "ellisonleao/gruvbox.nvim" },
     { "EdenEast/nightfox.nvim" },
-    { "rebelot/kanagawa.nvim" },
     { "vague2k/vague.nvim" },
 }
