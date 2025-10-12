@@ -34,7 +34,7 @@ return {
                     program = read_program,
                     args = read_args,
                     cwd = "${workspaceFolder}",
-                    stopOnEntry = true,
+                    stopOnEntry = false,
                 },
                 {
                     name = "Launch last",
@@ -47,7 +47,7 @@ return {
                         return vim.split(last_args, " ")
                     end,
                     cwd = "${workspaceFolder}",
-                    stopOnEntry = true,
+                    stopOnEntry = false,
                 },
             }
             dap.configurations.c = dap.configurations.cpp
