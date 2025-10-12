@@ -50,11 +50,11 @@ elseif is_windows then
     }
 
     -- wsl stuff
-    config.default_prog = { "wsl", "--cd", "~" }
+    config.default_prog = { "wsl", "-d", "fedora", "--cd", "~" }
     config.launch_menu = {
         {
             label = "WSL",
-            args = { "wsl", "--cd", "~" },
+            args = { "wsl", "-d", "fedora", "--cd", "~" }
         },
         {
             label = "PowerShell",
