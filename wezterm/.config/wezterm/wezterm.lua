@@ -22,13 +22,6 @@ config.initial_rows = 40
 
 if is_linux then
     -- hyprland :)
-    wezterm.on('window-config-reloaded', function(window)
-        if wezterm.gui.screens().active.name == 'eDP-1' then
-            window:set_config_overrides({
-                dpi = 384
-            })
-        end
-    end)
     config.font_size = 16
     config.window_decorations = "NONE"
     config.enable_tab_bar = false
