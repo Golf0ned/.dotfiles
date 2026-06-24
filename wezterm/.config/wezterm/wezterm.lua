@@ -50,6 +50,10 @@ elseif is_windows then
             args = { "wsl", "-d", "fedora", "--cd", "~" }
         },
         {
+            label = "Git Bash",
+            args = { "C:\\Program Files\\Git\\bin\\bash.exe", "--login", "-i" }
+        },
+        {
             label = "PowerShell",
             args = { "powershell" },
         },
