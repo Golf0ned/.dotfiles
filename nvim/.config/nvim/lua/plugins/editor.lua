@@ -1,5 +1,29 @@
 return {
     {
+        "nvim-mini/mini.ai",
+        version = false,
+        opts = {},
+    },
+    {
+        "nvim-mini/mini.surround",
+        version = false,
+        opts = {
+            -- mappings = {
+            --     add = "ys",
+            --     delete = "ds",
+            --     find = "gs",
+            --     find_left = "gS",
+            --     highlight = "gsh",
+            --     replace = "cs",
+            --     update_n_lines = "",
+            -- },
+        },
+    },
+    {
+        "windwp/nvim-ts-autotag",
+        opts = {}
+    },
+    {
         "lewis6991/gitsigns.nvim",
         opts = {},
     },
