@@ -98,7 +98,6 @@ vim.keymap.set("n", "<leader>;;", "<cmd>set background=light<cr><cmd>colorscheme
 --
 require("lazy").setup({
     spec = {
-        -- import your plugins
         {
             "folke/tokyonight.nvim",
             priority = 1000,
@@ -110,9 +109,6 @@ require("lazy").setup({
                     },
                     on_colors = function(colors)
                         colors.git = {
-                            -- add = "#82c13e",
-                            -- change = "#d4902b",
-                            -- delete = "#f10e38",
                             add = colors.green,
                             change = colors.yellow,
                             delete = colors.red,
@@ -130,24 +126,15 @@ require("lazy").setup({
         },
         { "EdenEast/nightfox.nvim" },
         { "vague2k/vague.nvim" },
-
         {
             "nvim-mini/mini.nvim",
-            version = false,
             config = function()
                 require("mini.ai").setup()
+                require("mini.diff").setup()
                 require("mini.icons").setup()
                 require("mini.statusline").setup()
                 require("mini.surround").setup()
             end,
-        },
-        {
-            "windwp/nvim-ts-autotag",
-            opts = {}
-        },
-        {
-            "lewis6991/gitsigns.nvim",
-            opts = {},
         },
         {
             "saghen/blink.indent",
@@ -160,18 +147,17 @@ require("lazy").setup({
         {
             "HiPhish/rainbow-delimiters.nvim",
             config = function()
-                vim.g.rainbow_delimiters = {
+                require("rainbow-delimiters.setup").setup({
                     highlight = {
                         "RainbowDelimiterYellow",
                         "RainbowDelimiterViolet",
                         "RainbowDelimiterBlue",
                     },
-                }
+                })
             end
         },
         {
             "nvim-treesitter/nvim-treesitter",
-            lazy = false,
             build = ":TSUpdate",
             config = function()
                 local parsers = { "bash", "c", "cpp", "diff", "html", "lua", "luadoc", "markdown", "markdown_inline",
@@ -302,15 +288,11 @@ require("lazy").setup({
         {
             "neovim/nvim-lspconfig",
             dependencies = {
+                { "saghen/blink.cmp" },
                 { "williamboman/mason.nvim", opts = {} },
                 "williamboman/mason-lspconfig.nvim",
-                "hrsh7th/cmp-nvim-lsp",
             },
             config = function()
-                -- TODO: add LSP keymaps
-
-                local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
                 local servers = {
                     basedpyright = {
                         settings = {
@@ -338,13 +320,19 @@ require("lazy").setup({
                     handlers = {
                         function(server_name)
                             local server = servers[server_name] or {}
-                            server.capabilities = vim.tbl_deep_extend("force", {}, capabilities,
-                                server.capabilities or {})
+                            server.capabilities = require("blink.cmp").get_lsp_capabilities()
                             require("lspconfig")[server_name].setup(server)
                         end,
                     }
                 })
             end,
+        },
+        {
+            "saghen/blink.cmp",
+            version = "1.*",
+            opts = {
+                keymap = { preset = "super-tab" },
+            }
         },
         {
             "stevearc/conform.nvim",
@@ -364,27 +352,6 @@ require("lazy").setup({
                 c = { "clang_format" },
                 cpp = { "clang_format" },
             }
-        },
-        {
-            "hrsh7th/nvim-cmp",
-            dependencies = { "L3MON4D3/LuaSnip" },
-            config = function()
-                local cmp = require("cmp")
-                cmp.setup({
-                    sources = {
-                        { name = "nvim_lsp" },
-                    },
-                    mapping = cmp.mapping.preset.insert({
-                        ["<CR>"] = cmp.mapping.confirm({ select = false }),
-                        ["<C-Space>"] = cmp.mapping.complete(),
-                    }),
-                    snippet = {
-                        expand = function(args)
-                            require("luasnip").lsp_expand(args.body)
-                        end,
-                    },
-                })
-            end,
         },
         {
             "mfussenegger/nvim-dap",
@@ -457,6 +424,4 @@ require("lazy").setup({
             end,
         },
     },
-    -- automatically check for plugin updates
-    checker = { enabled = false },
 })
