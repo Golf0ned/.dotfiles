@@ -1,24 +1,4 @@
 --
--- Bootstrap lazy.nvim
--- Still using for now until pack gets more fleshed out
---
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
-    local lazyrepo = "https://github.com/folke/lazy.nvim.git"
-    local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
-    if vim.v.shell_error ~= 0 then
-        vim.api.nvim_echo({
-            { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-            { out,                            "WarningMsg" },
-            { "\nPress any key to exit..." },
-        }, true, {})
-        vim.fn.getchar()
-        os.exit(1)
-    end
-end
-vim.opt.rtp:prepend(lazypath)
-
---
 -- Settings
 --
 
@@ -26,27 +6,25 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
--- Column
-vim.opt.number = true
-vim.opt.relativenumber = true
-vim.opt.signcolumn = "yes"
-
 -- Line
-vim.opt.cursorline = true
-vim.opt.wrap = false
+vim.o.number = true
+vim.o.relativenumber = true
+vim.o.signcolumn = "yes"
+vim.o.cursorline = true
+vim.o.wrap = false
 
 -- Indent
-vim.opt.tabstop = 4
-vim.opt.softtabstop = 4
-vim.opt.shiftwidth = 4
-vim.opt.expandtab = true
-vim.opt.smartindent = true
+vim.o.tabstop = 4
+vim.o.softtabstop = 4
+vim.o.shiftwidth = 4
+vim.o.expandtab = true
+vim.o.smartindent = true
 
 -- Undo
-vim.opt.swapfile = false
-vim.opt.backup = false
-vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
-vim.opt.undofile = true
+vim.o.swapfile = false
+vim.o.backup = false
+vim.o.undodir = os.getenv("HOME") .. "/.vim/undodir"
+vim.o.undofile = true
 
 -- Colors
 vim.opt.termguicolors = true
@@ -54,13 +32,19 @@ vim.cmd([[let &t_Cs = "\e[4:3m"]])
 vim.cmd([[let &t_Ce = "\e[4:0m"]])
 
 --
--- Bindings
+-- Keymaps
 --
 
 -- Clear search highlight
 vim.keymap.set("n", "<esc>", "<cmd>noh<cr>")
 
--- Diagnostic helpers
+-- Centering
+vim.keymap.set("n", "n", "nzzzv")
+vim.keymap.set("n", "N", "Nzzzv")
+vim.keymap.set("n", "<C-d>", "<C-d>zz")
+vim.keymap.set("n", "<C-u>", "<C-u>zz")
+
+-- LSP
 vim.keymap.set("n", "gl", "<cmd>lua vim.diagnostic.open_float()<cr>")
 vim.keymap.set("n", "[d", function()
     vim.diagnostic.jump({ count = -1, float = true })
@@ -86,66 +70,49 @@ vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]])
 -- Join keeps line
 vim.keymap.set("n", "J", "mzJ`z")
 
--- Sanity centering
-vim.keymap.set("n", "n", "nzzzv")
-vim.keymap.set("n", "N", "Nzzzv")
-vim.keymap.set("n", "<C-d>", "<C-d>zz")
-vim.keymap.set("n", "<C-u>", "<C-u>zz")
-
--- Presenter mode
+-- Presenter mode (i have used this once!)
 vim.keymap.set("n", "<leader>;;", "<cmd>set background=light<cr><cmd>colorscheme retrobox<cr>")
 
 --
 -- Plugins
+-- (switching to vim.pack eventually)
 --
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+    local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+    local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+    if vim.v.shell_error ~= 0 then
+        vim.api.nvim_echo({
+            { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+            { out, "WarningMsg" },
+            { "\nPress any key to exit..." },
+        }, true, {})
+        vim.fn.getchar()
+        os.exit(1)
+    end
+end
+vim.opt.rtp:prepend(lazypath)
+
 require("lazy").setup({
     spec = {
-        {
-            "folke/tokyonight.nvim",
-            priority = 1000,
-            config = function()
-                require("tokyonight").setup({
-                    style = "night",
-                    styles = {
-                        keywords = { italic = false },
-                    },
-                    on_colors = function(colors)
-                        colors.git = {
-                            add = colors.green,
-                            change = colors.yellow,
-                            delete = colors.red,
-                        }
-                    end,
-                    on_highlights = function(highlights, colors)
-                        highlights.MatchParen = {
-                            bg = colors.blue0,
-                            bold = true,
-                        }
-                    end,
-                })
-                vim.cmd.colorscheme("tokyonight")
-            end,
-        },
-        { "EdenEast/nightfox.nvim" },
-        { "vague2k/vague.nvim" },
+        --
+        -- 0. Collections
+        --
         {
             "nvim-mini/mini.nvim",
             config = function()
                 require("mini.ai").setup()
                 require("mini.diff").setup()
+                require("mini.git").setup()
                 require("mini.icons").setup()
                 require("mini.statusline").setup()
                 require("mini.surround").setup()
             end,
         },
-        {
-            "saghen/blink.indent",
-            opts = {
-                scope = {
-                    highlights = { "BlinkIndentScope" },
-                },
-            },
-        },
+
+        --
+        -- 1. Editor
+        --
         {
             "HiPhish/rainbow-delimiters.nvim",
             config = function()
@@ -158,6 +125,114 @@ require("lazy").setup({
                 })
             end,
         },
+        {
+            "saghen/blink.indent",
+            opts = {
+                scope = {
+                    highlights = { "BlinkIndentScope" },
+                },
+            },
+        },
+
+        --
+        -- 2. Navigation
+        --
+        {
+            "nvim-telescope/telescope.nvim",
+            dependencies = {
+                "nvim-lua/plenary.nvim",
+                {
+                    "nvim-telescope/telescope-fzf-native.nvim",
+                    build = "make",
+                    cond = function()
+                        return vim.fn.executable("make") == 1
+                    end,
+                },
+            },
+            config = function()
+                local builtin = require("telescope.builtin")
+                vim.keymap.set("n", "<leader>sf", builtin.find_files)
+                vim.keymap.set("n", "<leader>sh", builtin.help_tags)
+                vim.keymap.set("n", "<leader>sg", builtin.live_grep)
+                vim.keymap.set("n", "<leader>sn", function()
+                    builtin.find_files({ cwd = vim.fn.stdpath("config") })
+                end)
+                pcall(require("telescope").load_extension("fzf"))
+            end,
+        },
+        {
+            "stevearc/oil.nvim",
+            dependencies = { "nvim-mini/mini.nvim" },
+            config = function()
+                require("oil").setup({
+                    watch_for_changes = true,
+                    keymaps = {
+                        ["-"] = { "actions.parent", mode = "n" },
+                        ["_"] = { "actions.open_cwd", mode = "n" },
+                        ["<C-h>"] = false,
+                        ["<C-l>"] = false,
+                    },
+                    view_options = {
+                        show_hidden = true,
+                    },
+                    win_options = {
+                        signcolumn = "yes",
+                        winbar = "%{v:lua.require('oil').get_current_dir()}",
+                    },
+                })
+                vim.keymap.set("n", "-", "<CMD>Oil<CR>")
+            end,
+        },
+        {
+            "ThePrimeagen/harpoon",
+            branch = "harpoon2",
+            dependencies = { "nvim-lua/plenary.nvim" },
+            config = function()
+                local harpoon = require("harpoon")
+
+                harpoon:setup()
+                vim.keymap.set("n", "<leader>hh", function()
+                    harpoon.ui:toggle_quick_menu(harpoon:list())
+                end)
+                vim.keymap.set("n", "<leader>ha", function()
+                    harpoon:list():add()
+                end)
+                vim.keymap.set("n", "<leader>h1", function()
+                    harpoon:list():select(1)
+                end)
+                vim.keymap.set("n", "<leader>h2", function()
+                    harpoon:list():select(2)
+                end)
+                vim.keymap.set("n", "<leader>h3", function()
+                    harpoon:list():select(3)
+                end)
+                vim.keymap.set("n", "<leader>h4", function()
+                    harpoon:list():select(4)
+                end)
+            end,
+        },
+        {
+            "christoomey/vim-tmux-navigator",
+            cmd = {
+                "TmuxNavigateLeft",
+                "TmuxNavigateDown",
+                "TmuxNavigateUp",
+                "TmuxNavigateRight",
+                "TmuxNavigatePrevious",
+                "TmuxNavigatorProcessList",
+            },
+            keys = {
+                { "<c-h>", "<cmd><C-U>TmuxNavigateLeft<cr>" },
+                { "<c-j>", "<cmd><C-U>TmuxNavigateDown<cr>" },
+                { "<c-k>", "<cmd><C-U>TmuxNavigateUp<cr>" },
+                { "<c-l>", "<cmd><C-U>TmuxNavigateRight<cr>" },
+                { "<c-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>" },
+            },
+        },
+
+        --
+        -- 3. Treesitter
+        --
         {
             "nvim-treesitter/nvim-treesitter",
             build = ":TSUpdate",
@@ -212,108 +287,10 @@ require("lazy").setup({
                 })
             end,
         },
-        {
-            "nvim-telescope/telescope.nvim",
-            dependencies = {
-                "nvim-lua/plenary.nvim",
-                {
-                    "nvim-telescope/telescope-fzf-native.nvim",
-                    build = "make",
-                    cond = function()
-                        return vim.fn.executable("make") == 1
-                    end,
-                },
-            },
-            config = function()
-                local builtin = require("telescope.builtin")
-                vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "[S]earch [F]iles" })
-                vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "[S]earch [H]elp" })
-                vim.keymap.set("n", "<leader>sg", builtin.live_grep, { desc = "[S]earch by [G]rep" })
-                vim.keymap.set("n", "<leader>sn", function()
-                    builtin.find_files({ cwd = vim.fn.stdpath("config") })
-                end, { desc = "[S]earch [N]eovim Config" })
-                pcall(require("telescope").load_extension("fzf"))
-            end,
-        },
-        {
-            "ThePrimeagen/harpoon",
-            branch = "harpoon2",
-            dependencies = { "nvim-lua/plenary.nvim" },
-            config = function()
-                local harpoon = require("harpoon")
 
-                harpoon:setup()
-                vim.keymap.set("n", "<leader>hh", function()
-                    harpoon.ui:toggle_quick_menu(harpoon:list())
-                end, { desc = "[H]arpoon [H]arpoon" })
-                vim.keymap.set("n", "<leader>ha", function()
-                    harpoon:list():add()
-                end, { desc = "[H]arpoon [A]dd" })
-                vim.keymap.set("n", "<leader>h1", function()
-                    harpoon:list():select(1)
-                end, { desc = "[H]arpoon [1]" })
-                vim.keymap.set("n", "<leader>h2", function()
-                    harpoon:list():select(2)
-                end, { desc = "[H]arpoon [2]" })
-                vim.keymap.set("n", "<leader>h3", function()
-                    harpoon:list():select(3)
-                end, { desc = "[H]arpoon [3]" })
-                vim.keymap.set("n", "<leader>h4", function()
-                    harpoon:list():select(4)
-                end, { desc = "[H]arpoon [4]" })
-            end,
-        },
-        {
-            "stevearc/oil.nvim",
-            dependencies = { "nvim-mini/mini.nvim" },
-            config = function()
-                require("oil").setup({
-                    watch_for_changes = true,
-                    keymaps = {
-                        ["-"] = { "actions.parent", mode = "n" },
-                        ["_"] = { "actions.open_cwd", mode = "n" },
-                        -- unbind nav mappings
-                        ["<C-h>"] = false,
-                        ["<C-l>"] = false,
-                    },
-                    view_options = {
-                        show_hidden = true,
-                    },
-                    win_options = {
-                        signcolumn = "yes",
-                        winbar = "%{v:lua.require('oil').get_current_dir()}",
-                    },
-                })
-                vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
-            end,
-        },
-        {
-            "christoomey/vim-tmux-navigator",
-            cmd = {
-                "TmuxNavigateLeft",
-                "TmuxNavigateDown",
-                "TmuxNavigateUp",
-                "TmuxNavigateRight",
-                "TmuxNavigatePrevious",
-                "TmuxNavigatorProcessList",
-            },
-            keys = {
-                { "<c-h>",  "<cmd><C-U>TmuxNavigateLeft<cr>" },
-                { "<c-j>",  "<cmd><C-U>TmuxNavigateDown<cr>" },
-                { "<c-k>",  "<cmd><C-U>TmuxNavigateUp<cr>" },
-                { "<c-l>",  "<cmd><C-U>TmuxNavigateRight<cr>" },
-                { "<c-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>" },
-            },
-        },
-        {
-            "folke/lazydev.nvim",
-            ft = "lua",
-            opts = {
-                library = {
-                    { path = "${3rd}/luv/library", words = { "vim%.uv" } },
-                },
-            },
-        },
+        --
+        -- 4. LSP/DAP
+        --
         {
             "neovim/nvim-lspconfig",
             dependencies = {
@@ -378,6 +355,7 @@ require("lazy").setup({
             formatters_by_ft = {
                 c = { "clang_format" },
                 cpp = { "clang_format" },
+                lua = { "stylua" },
             },
         },
         {
@@ -450,5 +428,46 @@ require("lazy").setup({
                 vim.keymap.set("n", "<F12>", dapview.toggle)
             end,
         },
+        {
+            "folke/lazydev.nvim",
+            ft = "lua",
+            opts = {
+                library = {
+                    { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+                },
+            },
+        },
+
+        --
+        -- 5. Themes
+        --
+        {
+            "folke/tokyonight.nvim",
+            priority = 1000,
+            config = function()
+                require("tokyonight").setup({
+                    style = "night",
+                    styles = {
+                        keywords = { italic = false },
+                    },
+                    on_colors = function(colors)
+                        colors.git = {
+                            add = colors.green,
+                            change = colors.yellow,
+                            delete = colors.red,
+                        }
+                    end,
+                    on_highlights = function(highlights, colors)
+                        highlights.MatchParen = {
+                            bg = colors.blue0,
+                            bold = true,
+                        }
+                    end,
+                })
+                vim.cmd.colorscheme("tokyonight")
+            end,
+        },
+        { "EdenEast/nightfox.nvim" },
+        { "vague2k/vague.nvim" },
     },
 })
