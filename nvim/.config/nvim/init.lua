@@ -18,7 +18,6 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-
 --
 -- Settings
 --
@@ -54,7 +53,6 @@ vim.opt.termguicolors = true
 vim.cmd([[let &t_Cs = "\e[4:3m"]])
 vim.cmd([[let &t_Ce = "\e[4:0m"]])
 
-
 --
 -- Bindings
 --
@@ -64,8 +62,12 @@ vim.keymap.set("n", "<esc>", "<cmd>noh<cr>")
 
 -- Diagnostic helpers
 vim.keymap.set("n", "gl", "<cmd>lua vim.diagnostic.open_float()<cr>")
-vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end)
-vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1, float = true }) end)
+vim.keymap.set("n", "[d", function()
+    vim.diagnostic.jump({ count = -1, float = true })
+end)
+vim.keymap.set("n", "]d", function()
+    vim.diagnostic.jump({ count = 1, float = true })
+end)
 
 -- Move lines in visual
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
@@ -121,8 +123,8 @@ require("lazy").setup({
                         }
                     end,
                 })
-                vim.cmd.colorscheme "tokyonight"
-            end
+                vim.cmd.colorscheme("tokyonight")
+            end,
         },
         { "EdenEast/nightfox.nvim" },
         { "vague2k/vague.nvim" },
@@ -154,18 +156,34 @@ require("lazy").setup({
                         "RainbowDelimiterBlue",
                     },
                 })
-            end
+            end,
         },
         {
             "nvim-treesitter/nvim-treesitter",
             build = ":TSUpdate",
             config = function()
-                local parsers = { "bash", "c", "cpp", "diff", "html", "lua", "luadoc", "markdown", "markdown_inline",
-                    "python", "query", "rust", "vim", "vimdoc" }
+                local parsers = {
+                    "bash",
+                    "c",
+                    "cpp",
+                    "diff",
+                    "html",
+                    "lua",
+                    "luadoc",
+                    "markdown",
+                    "markdown_inline",
+                    "python",
+                    "query",
+                    "rust",
+                    "vim",
+                    "vimdoc",
+                }
                 require("nvim-treesitter").install(parsers)
 
                 local function treesitter_try_attach(buf, language)
-                    if not vim.treesitter.language.add(language) then return end
+                    if not vim.treesitter.language.add(language) then
+                        return
+                    end
                     vim.treesitter.start(buf, language)
                 end
 
@@ -175,23 +193,24 @@ require("lazy").setup({
                         local buf, filetype = args.buf, args.match
 
                         local language = vim.treesitter.language.get_lang(filetype)
-                        if not language then return end
+                        if not language then
+                            return
+                        end
 
-                        local installed_parsers = require("nvim-treesitter").get_installed "parsers"
+                        local installed_parsers = require("nvim-treesitter").get_installed("parsers")
 
                         if vim.tbl_contains(installed_parsers, language) then
                             treesitter_try_attach(buf, language)
                         elseif vim.tbl_contains(available_parsers, language) then
                             require("nvim-treesitter").install(language):await(function()
-                                treesitter_try_attach(buf,
-                                    language)
+                                treesitter_try_attach(buf, language)
                             end)
                         else
                             treesitter_try_attach(buf, language)
                         end
                     end,
                 })
-            end
+            end,
         },
         {
             "nvim-telescope/telescope.nvim",
@@ -203,7 +222,7 @@ require("lazy").setup({
                     cond = function()
                         return vim.fn.executable("make") == 1
                     end,
-                }
+                },
             },
             config = function()
                 local builtin = require("telescope.builtin")
@@ -214,7 +233,7 @@ require("lazy").setup({
                     builtin.find_files({ cwd = vim.fn.stdpath("config") })
                 end, { desc = "[S]earch [N]eovim Config" })
                 pcall(require("telescope").load_extension("fzf"))
-            end
+            end,
         },
         {
             "ThePrimeagen/harpoon",
@@ -227,12 +246,22 @@ require("lazy").setup({
                 vim.keymap.set("n", "<leader>hh", function()
                     harpoon.ui:toggle_quick_menu(harpoon:list())
                 end, { desc = "[H]arpoon [H]arpoon" })
-                vim.keymap.set("n", "<leader>ha", function() harpoon:list():add() end, { desc = "[H]arpoon [A]dd" })
-                vim.keymap.set("n", "<leader>h1", function() harpoon:list():select(1) end, { desc = "[H]arpoon [1]" })
-                vim.keymap.set("n", "<leader>h2", function() harpoon:list():select(2) end, { desc = "[H]arpoon [2]" })
-                vim.keymap.set("n", "<leader>h3", function() harpoon:list():select(3) end, { desc = "[H]arpoon [3]" })
-                vim.keymap.set("n", "<leader>h4", function() harpoon:list():select(4) end, { desc = "[H]arpoon [4]" })
-            end
+                vim.keymap.set("n", "<leader>ha", function()
+                    harpoon:list():add()
+                end, { desc = "[H]arpoon [A]dd" })
+                vim.keymap.set("n", "<leader>h1", function()
+                    harpoon:list():select(1)
+                end, { desc = "[H]arpoon [1]" })
+                vim.keymap.set("n", "<leader>h2", function()
+                    harpoon:list():select(2)
+                end, { desc = "[H]arpoon [2]" })
+                vim.keymap.set("n", "<leader>h3", function()
+                    harpoon:list():select(3)
+                end, { desc = "[H]arpoon [3]" })
+                vim.keymap.set("n", "<leader>h4", function()
+                    harpoon:list():select(4)
+                end, { desc = "[H]arpoon [4]" })
+            end,
         },
         {
             "stevearc/oil.nvim",
@@ -253,10 +282,10 @@ require("lazy").setup({
                     win_options = {
                         signcolumn = "yes",
                         winbar = "%{v:lua.require('oil').get_current_dir()}",
-                    }
+                    },
                 })
                 vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
-            end
+            end,
         },
         {
             "christoomey/vim-tmux-navigator",
@@ -281,7 +310,7 @@ require("lazy").setup({
             ft = "lua",
             opts = {
                 library = {
-                    { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
+                    { path = "${3rd}/luv/library", words = { "vim%.uv" } },
                 },
             },
         },
@@ -306,7 +335,7 @@ require("lazy").setup({
                             fallbackFlags = {
                                 "-std=c++23",
                             },
-                        }
+                        },
                     },
                     lua_ls = {},
                     rust_analyzer = {},
@@ -323,16 +352,14 @@ require("lazy").setup({
                             server.capabilities = require("blink.cmp").get_lsp_capabilities()
                             require("lspconfig")[server_name].setup(server)
                         end,
-                    }
+                    },
                 })
             end,
         },
         {
             "saghen/blink.cmp",
             version = "1.*",
-            opts = {
-                keymap = { preset = "super-tab" },
-            }
+            opts = {},
         },
         {
             "stevearc/conform.nvim",
@@ -340,7 +367,7 @@ require("lazy").setup({
                 {
                     "<leader>f",
                     function()
-                        require("conform").format { async = true, lsp_format = "fallback" }
+                        require("conform").format({ async = true, lsp_format = "fallback" })
                     end,
                     mode = "",
                 },
@@ -351,7 +378,7 @@ require("lazy").setup({
             formatters_by_ft = {
                 c = { "clang_format" },
                 cpp = { "clang_format" },
-            }
+            },
         },
         {
             "mfussenegger/nvim-dap",
@@ -362,19 +389,19 @@ require("lazy").setup({
                 "williamboman/mason.nvim",
             },
             config = function()
-                local dap = require "dap"
-                local dapview = require "dap-view"
+                local dap = require("dap")
+                local dapview = require("dap-view")
 
                 require("dap-view").setup()
                 require("nvim-dap-virtual-text").setup()
 
-                local last_program = vim.fn.getcwd();
+                local last_program = vim.fn.getcwd()
                 local read_program = function()
                     last_program = vim.fn.input("Run: ", last_program, "file")
                     return last_program
                 end
 
-                local last_args = "";
+                local last_args = ""
                 local read_args = function()
                     last_args = vim.fn.input("Args: ", last_args, "file")
                     return vim.split(last_args, " ")
