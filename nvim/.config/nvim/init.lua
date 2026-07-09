@@ -73,7 +73,7 @@ vim.keymap.set("n", "J", "mzJ`z")
 -- Presenter mode (i have used this once!)
 vim.keymap.set("n", "<leader>;;", "<cmd>set background=light<cr><cmd>colorscheme retrobox<cr>")
 
--- Neovim config
+-- Open config
 vim.keymap.set("n", "<leader>nn", function()
     vim.cmd("edit " .. vim.fn.stdpath("config") .. "/init.lua")
 end, { desc = "Open init.lua" })
@@ -183,38 +183,23 @@ require("lazy").setup({
             dependencies = { "nvim-lua/plenary.nvim" },
             config = function()
                 local harpoon = require("harpoon")
-
                 harpoon:setup()
+
                 vim.keymap.set("n", "<leader>hh", function()
                     harpoon.ui:toggle_quick_menu(harpoon:list())
                 end)
                 vim.keymap.set("n", "<leader>ha", function()
                     harpoon:list():add()
                 end)
-                vim.keymap.set("n", "<leader>h1", function()
-                    harpoon:list():select(1)
-                end)
-                vim.keymap.set("n", "<leader>h2", function()
-                    harpoon:list():select(2)
-                end)
-                vim.keymap.set("n", "<leader>h3", function()
-                    harpoon:list():select(3)
-                end)
-                vim.keymap.set("n", "<leader>h4", function()
-                    harpoon:list():select(4)
-                end)
+                for i = 1, 5 do
+                    vim.keymap.set("n", "<leader>h" .. i, function()
+                        harpoon:list():select(i)
+                    end)
+                end
             end,
         },
         {
             "christoomey/vim-tmux-navigator",
-            cmd = {
-                "TmuxNavigateLeft",
-                "TmuxNavigateDown",
-                "TmuxNavigateUp",
-                "TmuxNavigateRight",
-                "TmuxNavigatePrevious",
-                "TmuxNavigatorProcessList",
-            },
             keys = {
                 { "<c-h>",  "<cmd><C-U>TmuxNavigateLeft<cr>" },
                 { "<c-j>",  "<cmd><C-U>TmuxNavigateDown<cr>" },
@@ -231,24 +216,6 @@ require("lazy").setup({
             "nvim-treesitter/nvim-treesitter",
             build = ":TSUpdate",
             config = function()
-                local parsers = {
-                    "bash",
-                    "c",
-                    "cpp",
-                    "diff",
-                    "html",
-                    "lua",
-                    "luadoc",
-                    "markdown",
-                    "markdown_inline",
-                    "python",
-                    "query",
-                    "rust",
-                    "vim",
-                    "vimdoc",
-                }
-                require("nvim-treesitter").install(parsers)
-
                 local function treesitter_try_attach(buf, language)
                     if not vim.treesitter.language.add(language) then
                         return
@@ -462,6 +429,7 @@ require("lazy").setup({
             end,
         },
         { "EdenEast/nightfox.nvim" },
+        { "Mofiqul/vscode.nvim" },
         { "vague2k/vague.nvim" },
     },
 })
