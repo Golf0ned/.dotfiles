@@ -73,6 +73,11 @@ vim.keymap.set("n", "J", "mzJ`z")
 -- Presenter mode (i have used this once!)
 vim.keymap.set("n", "<leader>;;", "<cmd>set background=light<cr><cmd>colorscheme retrobox<cr>")
 
+-- Neovim config
+vim.keymap.set("n", "<leader>nn", function()
+    vim.cmd("edit " .. vim.fn.stdpath("config") .. "/init.lua")
+end, { desc = "Open init.lua" })
+
 --
 -- Plugins
 -- (switching to vim.pack eventually)
@@ -84,7 +89,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
     if vim.v.shell_error ~= 0 then
         vim.api.nvim_echo({
             { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-            { out, "WarningMsg" },
+            { out,                            "WarningMsg" },
             { "\nPress any key to exit..." },
         }, true, {})
         vim.fn.getchar()
@@ -138,26 +143,15 @@ require("lazy").setup({
         -- 2. Navigation
         --
         {
-            "nvim-telescope/telescope.nvim",
-            dependencies = {
-                "nvim-lua/plenary.nvim",
-                {
-                    "nvim-telescope/telescope-fzf-native.nvim",
-                    build = "make",
-                    cond = function()
-                        return vim.fn.executable("make") == 1
-                    end,
-                },
-            },
+            "dmtrKovalenko/fff.nvim",
+            build = function()
+                require("fff.download").download_or_build_binary()
+            end,
+            opts = {},
             config = function()
-                local builtin = require("telescope.builtin")
-                vim.keymap.set("n", "<leader>sf", builtin.find_files)
-                vim.keymap.set("n", "<leader>sh", builtin.help_tags)
-                vim.keymap.set("n", "<leader>sg", builtin.live_grep)
-                vim.keymap.set("n", "<leader>sn", function()
-                    builtin.find_files({ cwd = vim.fn.stdpath("config") })
-                end)
-                pcall(require("telescope").load_extension("fzf"))
+                local fff = require("fff")
+                vim.keymap.set("n", "<leader>sf", fff.find_files)
+                vim.keymap.set("n", "<leader>sg", fff.live_grep)
             end,
         },
         {
@@ -222,10 +216,10 @@ require("lazy").setup({
                 "TmuxNavigatorProcessList",
             },
             keys = {
-                { "<c-h>", "<cmd><C-U>TmuxNavigateLeft<cr>" },
-                { "<c-j>", "<cmd><C-U>TmuxNavigateDown<cr>" },
-                { "<c-k>", "<cmd><C-U>TmuxNavigateUp<cr>" },
-                { "<c-l>", "<cmd><C-U>TmuxNavigateRight<cr>" },
+                { "<c-h>",  "<cmd><C-U>TmuxNavigateLeft<cr>" },
+                { "<c-j>",  "<cmd><C-U>TmuxNavigateDown<cr>" },
+                { "<c-k>",  "<cmd><C-U>TmuxNavigateUp<cr>" },
+                { "<c-l>",  "<cmd><C-U>TmuxNavigateRight<cr>" },
                 { "<c-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>" },
             },
         },
