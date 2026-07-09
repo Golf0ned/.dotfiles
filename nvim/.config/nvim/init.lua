@@ -27,7 +27,7 @@ vim.o.undodir = os.getenv("HOME") .. "/.vim/undodir"
 vim.o.undofile = true
 
 -- Colors
-vim.opt.termguicolors = true
+vim.o.termguicolors = true
 vim.cmd([[let &t_Cs = "\e[4:3m"]])
 vim.cmd([[let &t_Ce = "\e[4:0m"]])
 
@@ -76,7 +76,7 @@ vim.keymap.set("n", "<leader>;;", "<cmd>set background=light<cr><cmd>colorscheme
 -- Open config
 vim.keymap.set("n", "<leader>nn", function()
     vim.cmd("edit " .. vim.fn.stdpath("config") .. "/init.lua")
-end, { desc = "Open init.lua" })
+end)
 
 --
 -- Plugins
@@ -307,26 +307,13 @@ require("lazy").setup({
                     function()
                         require("conform").format({ async = true, lsp_format = "fallback" })
                     end,
-                    mode = "",
                 },
-            },
-            opts = {
-                notify_on_error = false,
-            },
-            formatters_by_ft = {
-                c = { "clang_format" },
-                cpp = { "clang_format" },
-                lua = { "stylua" },
             },
         },
         {
             "folke/lazydev.nvim",
             ft = "lua",
-            opts = {
-                library = {
-                    { path = "${3rd}/luv/library", words = { "vim%.uv" } },
-                },
-            },
+            opts = {},
         },
 
         --
@@ -351,7 +338,6 @@ require("lazy").setup({
                     on_highlights = function(highlights, colors)
                         highlights.MatchParen = {
                             bg = colors.blue0,
-                            bold = true,
                         }
                     end,
                 })
