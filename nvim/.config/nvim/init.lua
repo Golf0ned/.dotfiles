@@ -89,7 +89,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
     if vim.v.shell_error ~= 0 then
         vim.api.nvim_echo({
             { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-            { out,                            "WarningMsg" },
+            { out, "WarningMsg" },
             { "\nPress any key to exit..." },
         }, true, {})
         vim.fn.getchar()
@@ -147,43 +147,52 @@ require("lazy").setup({
             build = function()
                 require("fff.download").download_or_build_binary()
             end,
-            opts = {},
-            config = function()
-                local fff = require("fff")
-                fff.setup({
-                    select = {
-                        select_window = function(_, _)
-                            return nil
-                        end,
-                    },
-                })
-
-                vim.keymap.set("n", "<leader>sf", fff.find_files)
-                vim.keymap.set("n", "<leader>sg", fff.live_grep)
-            end,
+            keys = {
+                {
+                    "<leader>sf",
+                    function()
+                        require("fff").find_files()
+                    end,
+                    desc = "Find files",
+                },
+                {
+                    "<leader>sg",
+                    function()
+                        require("fff").live_grep()
+                    end,
+                    desc = "Live grep",
+                },
+            },
+            opts = {
+                select = {
+                    select_window = function(_, _)
+                        return nil
+                    end,
+                },
+            },
         },
         {
             "stevearc/oil.nvim",
             dependencies = { "nvim-mini/mini.nvim" },
-            config = function()
-                require("oil").setup({
-                    watch_for_changes = true,
-                    keymaps = {
-                        ["-"] = { "actions.parent", mode = "n" },
-                        ["_"] = { "actions.open_cwd", mode = "n" },
-                        ["<C-h>"] = false,
-                        ["<C-l>"] = false,
-                    },
-                    view_options = {
-                        show_hidden = true,
-                    },
-                    win_options = {
-                        signcolumn = "yes",
-                        winbar = "%{v:lua.require('oil').get_current_dir()}",
-                    },
-                })
-                vim.keymap.set("n", "-", "<CMD>Oil<CR>")
-            end,
+            keys = {
+                { "-", "<cmd>Oil<cr>", desc = "Open parent directory" },
+            },
+            opts = {
+                watch_for_changes = true,
+                keymaps = {
+                    ["-"] = { "actions.parent", mode = "n" },
+                    ["_"] = { "actions.open_cwd", mode = "n" },
+                    ["<C-h>"] = false,
+                    ["<C-l>"] = false,
+                },
+                view_options = {
+                    show_hidden = true,
+                },
+                win_options = {
+                    signcolumn = "yes",
+                    winbar = "%{v:lua.require('oil').get_current_dir()}",
+                },
+            },
         },
         {
             "ThePrimeagen/harpoon",
@@ -209,10 +218,10 @@ require("lazy").setup({
         {
             "christoomey/vim-tmux-navigator",
             keys = {
-                { "<c-h>",  "<cmd><C-U>TmuxNavigateLeft<cr>" },
-                { "<c-j>",  "<cmd><C-U>TmuxNavigateDown<cr>" },
-                { "<c-k>",  "<cmd><C-U>TmuxNavigateUp<cr>" },
-                { "<c-l>",  "<cmd><C-U>TmuxNavigateRight<cr>" },
+                { "<c-h>", "<cmd><C-U>TmuxNavigateLeft<cr>" },
+                { "<c-j>", "<cmd><C-U>TmuxNavigateDown<cr>" },
+                { "<c-k>", "<cmd><C-U>TmuxNavigateUp<cr>" },
+                { "<c-l>", "<cmd><C-U>TmuxNavigateRight<cr>" },
                 { "<c-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>" },
             },
         },
@@ -264,7 +273,7 @@ require("lazy").setup({
             "neovim/nvim-lspconfig",
             dependencies = {
                 { "saghen/blink.cmp" },
-                { "mason-org/mason.nvim",           opts = {} },
+                { "mason-org/mason.nvim", opts = {} },
                 { "mason-org/mason-lspconfig.nvim", opts = {} },
             },
             config = function()
