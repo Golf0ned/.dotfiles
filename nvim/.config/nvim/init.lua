@@ -89,7 +89,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
     if vim.v.shell_error ~= 0 then
         vim.api.nvim_echo({
             { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-            { out, "WarningMsg" },
+            { out,                            "WarningMsg" },
             { "\nPress any key to exit..." },
         }, true, {})
         vim.fn.getchar()
@@ -209,10 +209,10 @@ require("lazy").setup({
         {
             "christoomey/vim-tmux-navigator",
             keys = {
-                { "<c-h>", "<cmd><C-U>TmuxNavigateLeft<cr>" },
-                { "<c-j>", "<cmd><C-U>TmuxNavigateDown<cr>" },
-                { "<c-k>", "<cmd><C-U>TmuxNavigateUp<cr>" },
-                { "<c-l>", "<cmd><C-U>TmuxNavigateRight<cr>" },
+                { "<c-h>",  "<cmd><C-U>TmuxNavigateLeft<cr>" },
+                { "<c-j>",  "<cmd><C-U>TmuxNavigateDown<cr>" },
+                { "<c-k>",  "<cmd><C-U>TmuxNavigateUp<cr>" },
+                { "<c-l>",  "<cmd><C-U>TmuxNavigateRight<cr>" },
                 { "<c-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>" },
             },
         },
@@ -264,15 +264,21 @@ require("lazy").setup({
             "neovim/nvim-lspconfig",
             dependencies = {
                 { "saghen/blink.cmp" },
-                { "williamboman/mason.nvim", opts = {} },
-                { "williamboman/mason-lspconfig.nvim" },
+                { "mason-org/mason.nvim",           opts = {} },
+                { "mason-org/mason-lspconfig.nvim", opts = {} },
             },
             config = function()
+                vim.lsp.config("*", {
+                    capabilities = require("blink.cmp").get_lsp_capabilities(),
+                })
+
                 local servers = {
                     basedpyright = {
                         settings = {
                             basedpyright = {
-                                typeCheckingMode = "off",
+                                analysis = {
+                                    typeCheckingMode = "off",
+                                },
                             },
                         },
                     },
@@ -283,23 +289,11 @@ require("lazy").setup({
                             },
                         },
                     },
-                    lua_ls = {},
-                    rust_analyzer = {},
                 }
 
-                local ensure_installed = vim.tbl_keys(servers or {})
-
-                require("mason-lspconfig").setup({
-                    ensure_installed = ensure_installed,
-                    automatic_installation = false,
-                    handlers = {
-                        function(server_name)
-                            local server = servers[server_name] or {}
-                            server.capabilities = require("blink.cmp").get_lsp_capabilities()
-                            require("lspconfig")[server_name].setup(server)
-                        end,
-                    },
-                })
+                for server, config in pairs(servers) do
+                    vim.lsp.config(server, config)
+                end
             end,
         },
         {
