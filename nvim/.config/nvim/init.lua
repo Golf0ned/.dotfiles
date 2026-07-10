@@ -150,6 +150,14 @@ require("lazy").setup({
             opts = {},
             config = function()
                 local fff = require("fff")
+                fff.setup({
+                    select = {
+                        select_window = function(_, _)
+                            return nil
+                        end,
+                    },
+                })
+
                 vim.keymap.set("n", "<leader>sf", fff.find_files)
                 vim.keymap.set("n", "<leader>sg", fff.live_grep)
             end,
