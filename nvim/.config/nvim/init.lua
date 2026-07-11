@@ -174,6 +174,7 @@ require("lazy").setup({
         {
             "stevearc/oil.nvim",
             dependencies = { "nvim-mini/mini.nvim" },
+            lazy = false,
             keys = {
                 { "-", "<cmd>Oil<cr>", desc = "Open parent directory" },
             },
