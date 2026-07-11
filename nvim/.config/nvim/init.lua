@@ -89,7 +89,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
     if vim.v.shell_error ~= 0 then
         vim.api.nvim_echo({
             { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-            { out, "WarningMsg" },
+            { out,                            "WarningMsg" },
             { "\nPress any key to exit..." },
         }, true, {})
         vim.fn.getchar()
@@ -147,6 +147,13 @@ require("lazy").setup({
             build = function()
                 require("fff.download").download_or_build_binary()
             end,
+            opts = {
+                select = {
+                    select_window = function(_, _)
+                        return nil
+                    end,
+                },
+            },
             keys = {
                 {
                     "<leader>sf",
@@ -163,21 +170,11 @@ require("lazy").setup({
                     desc = "Live grep",
                 },
             },
-            opts = {
-                select = {
-                    select_window = function(_, _)
-                        return nil
-                    end,
-                },
-            },
         },
         {
             "stevearc/oil.nvim",
             dependencies = { "nvim-mini/mini.nvim" },
             lazy = false,
-            keys = {
-                { "-", "<cmd>Oil<cr>", desc = "Open parent directory" },
-            },
             opts = {
                 watch_for_changes = true,
                 keymaps = {
@@ -193,6 +190,9 @@ require("lazy").setup({
                     signcolumn = "yes",
                     winbar = "%{v:lua.require('oil').get_current_dir()}",
                 },
+            },
+            keys = {
+                { "-", "<cmd>Oil<cr>", desc = "Open parent directory" },
             },
         },
         {
@@ -219,10 +219,10 @@ require("lazy").setup({
         {
             "christoomey/vim-tmux-navigator",
             keys = {
-                { "<c-h>", "<cmd><C-U>TmuxNavigateLeft<cr>" },
-                { "<c-j>", "<cmd><C-U>TmuxNavigateDown<cr>" },
-                { "<c-k>", "<cmd><C-U>TmuxNavigateUp<cr>" },
-                { "<c-l>", "<cmd><C-U>TmuxNavigateRight<cr>" },
+                { "<c-h>",  "<cmd><C-U>TmuxNavigateLeft<cr>" },
+                { "<c-j>",  "<cmd><C-U>TmuxNavigateDown<cr>" },
+                { "<c-k>",  "<cmd><C-U>TmuxNavigateUp<cr>" },
+                { "<c-l>",  "<cmd><C-U>TmuxNavigateRight<cr>" },
                 { "<c-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>" },
             },
         },
@@ -274,9 +274,10 @@ require("lazy").setup({
             "neovim/nvim-lspconfig",
             dependencies = {
                 { "saghen/blink.cmp" },
-                { "mason-org/mason.nvim", opts = {} },
+                { "mason-org/mason.nvim",           opts = {} },
                 { "mason-org/mason-lspconfig.nvim", opts = {} },
             },
+            event = { "BufReadPre", "BufNewFile" },
             config = function()
                 vim.lsp.config("*", {
                     capabilities = require("blink.cmp").get_lsp_capabilities(),
@@ -333,7 +334,7 @@ require("lazy").setup({
         --
         {
             "folke/tokyonight.nvim",
-            priority = 1000,
+            lazy = true,
             config = function()
                 require("tokyonight").setup({
                     style = "night",
@@ -353,11 +354,23 @@ require("lazy").setup({
                         }
                     end,
                 })
-                vim.cmd.colorscheme("tokyonight")
             end,
         },
-        { "EdenEast/nightfox.nvim" },
-        { "Mofiqul/vscode.nvim" },
-        { "vague2k/vague.nvim" },
+        {
+            "Mofiqul/vscode.nvim",
+            priority = 1000,
+            config = function()
+                local c = require("vscode.colors").get_colors()
+                require("vscode").setup({
+                    group_overrides = {
+                        RainbowDelimiterViolet = { fg = c.vscPink, bg = "NONE" },
+                    },
+                })
+
+                vim.cmd.colorscheme("vscode")
+            end,
+        },
+        { "EdenEast/nightfox.nvim", lazy = true },
+        { "vague2k/vague.nvim",     lazy = true },
     },
 })
