@@ -74,7 +74,7 @@ vim.keymap.set("n", "J", "mzJ`z")
 vim.keymap.set("n", "<leader>;;", "<cmd>set background=light<cr><cmd>colorscheme retrobox<cr>")
 
 -- Open config
-vim.keymap.set("n", "<leader>nn", function()
+vim.keymap.set("n", "<leader>;n", function()
     vim.cmd("edit " .. vim.fn.stdpath("config") .. "/init.lua")
 end)
 
