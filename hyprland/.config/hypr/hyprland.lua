@@ -310,7 +310,7 @@ hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = tr
 hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true })
 
-hl.bind("switch:on:Lid Switch", hl.dsp.exec_cmd("hyprlock --immediate"), { locked = true })
+hl.bind("switch:off:Lid Switch", hl.dsp.exec_cmd("hyprlock --immediate-render --no-fade-in"), { locked = true })
 
 
 --------------------------------
