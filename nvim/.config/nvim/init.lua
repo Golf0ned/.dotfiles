@@ -122,6 +122,10 @@ require("lazy").setup({
             "HiPhish/rainbow-delimiters.nvim",
             config = function()
                 require("rainbow-delimiters.setup").setup({
+                    -- skip scratch buffers: fff reuses one preview buffer and the re-attach overflows the stack
+                    condition = function(bufnr)
+                        return vim.bo[bufnr].buftype == ""
+                    end,
                     highlight = {
                         "RainbowDelimiterYellow",
                         "RainbowDelimiterViolet",
@@ -334,7 +338,8 @@ require("lazy").setup({
         --
         {
             "folke/tokyonight.nvim",
-            lazy = true,
+            priority = 1000,
+            -- lazy = true,
             config = function()
                 require("tokyonight").setup({
                     style = "night",
@@ -354,11 +359,14 @@ require("lazy").setup({
                         }
                     end,
                 })
+
+                vim.cmd.colorscheme("tokyonight")
             end,
         },
         {
             "Mofiqul/vscode.nvim",
-            priority = 1000,
+            -- priority = 1000,
+            lazy = true,
             config = function()
                 local c = require("vscode.colors").get_colors()
                 require("vscode").setup({
@@ -367,10 +375,23 @@ require("lazy").setup({
                     },
                 })
 
-                vim.cmd.colorscheme("vscode")
+                -- vim.cmd.colorscheme("vscode")
             end,
         },
         { "EdenEast/nightfox.nvim", lazy = true },
         { "vague2k/vague.nvim",     lazy = true },
+
+        --
+        -- 6. Experimental
+        --
+        {
+            "nvim-treesitter/nvim-treesitter-context",
+            opts = {},
+        },
+        {
+            "MeanderingProgrammer/render-markdown.nvim",
+            dependencies = { "nvim-mini/mini.nvim" },
+            opts = {},
+        },
     },
 })
